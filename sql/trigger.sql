@@ -1,11 +1,11 @@
 
--- DROP TRIGGER IF EXISTS journal_json_trigger ON journal;
+-- DROP TRIGGER IF EXISTS pgqueuer_json_trigger ON pgqueuer;
 
-CREATE TRIGGER journal_json_trigger
+CREATE TRIGGER pgqueuer_json_trigger
   BEFORE INSERT
-  ON journal
+  ON pgqueuer
   FOR EACH ROW
-  EXECUTE PROCEDURE journal_text_to_json();
+  EXECUTE PROCEDURE pgqueuer_text_to_json();
 
--- INSERT INTO JOURNAL (message_id, topic, text, qos, retain) values (1, 'topic', '{"a": "json"}', 1, 0);
--- SELECT * FROM journal;
+-- INSERT INTO pgqueuer (message_id, topic, text, qos, retain) values (1, 'topic', '{"a": "json"}', 1, 0);
+-- SELECT * FROM pgqueuer;

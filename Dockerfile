@@ -1,12 +1,17 @@
-FROM postgres:16.2-bookworm
+FROM timescaledev/timescaledb:nightly-pg16
 
-ENV MQTT_BROKER 127.0.0.1
-ENV POSTGRES_PASSWORD 123password
+ENV MQTT_BROKER=127.0.0.1
+ENV POSTGRES_PASSWORD=123password
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y python3 python3-pip python3-venv \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --update --no-cache python3 py3-pip py3-virtualenv
+
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev python3-dev
+
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+RUN pip install "cython<3.0.0" wheel
 
 RUN mkdir /mqtt-pg-logger
 COPY . /mqtt-pg-logger/
@@ -18,9 +23,7 @@ COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 WORKDIR /mqtt-pg-logger
-RUN python3 -m venv venv \
-    && . ./venv/bin/activate \
-    && pip install -r requirements.txt
+RUN python -m pip install -r requirements.txt
 
 EXPOSE 5432
 

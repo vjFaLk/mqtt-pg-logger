@@ -54,7 +54,7 @@ class TestMessageStore(unittest.TestCase):
         rows = SetupTest.query_all("select * from journal")
         self.assertEqual(len(rows), insert_count)
         for row in rows:
-            self.assertGreaterEqual(row.pop("journal_id"), 0)
+            self.assertGreaterEqual(row.pop("pgqueuer_id"), 0)
             row.pop("data")
 
             message_id = row["message_id"]
@@ -106,7 +106,7 @@ class TestMessageStore(unittest.TestCase):
 
         # valid json
         row = SetupTest.query_all("select * from journal where message_id=1")[0]
-        self.assertGreaterEqual(row.pop("journal_id"), 0)
+        self.assertGreaterEqual(row.pop("pgqueuer_id"), 0)
         json_data = row.pop("data")
 
         reloaded_message = Message(**row)
@@ -137,7 +137,7 @@ class TestMessageStore(unittest.TestCase):
 
         def check_message(message_id, compare_message):
             row = SetupTest.query_all(f"select * from journal where message_id={message_id}")[0]
-            self.assertGreaterEqual(row.pop("journal_id"), 0)
+            self.assertGreaterEqual(row.pop("pgqueuer_id"), 0)
             json_data = row.pop("data")
             self.assertTrue(json_data is None)
 

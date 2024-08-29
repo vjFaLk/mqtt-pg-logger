@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION journal_text_to_json()
+CREATE OR REPLACE FUNCTION pgqueuer_text_to_json()
   RETURNS TRIGGER
   LANGUAGE PLPGSQL
   AS
