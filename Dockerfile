@@ -1,15 +1,6 @@
-FROM timescaledev/timescaledb:nightly-pg16
+FROM python:3.7-alpine
 
-ENV MQTT_BROKER=127.0.0.1
-ENV POSTGRES_PASSWORD=123password
-
-RUN apk add --update --no-cache python3 py3-pip py3-virtualenv
-
-RUN apk add --no-cache --virtual .build-deps gcc musl-dev python3-dev
-
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN apk add --no-cache gcc musl-dev
 
 RUN pip install "cython<3.0.0" wheel
 
