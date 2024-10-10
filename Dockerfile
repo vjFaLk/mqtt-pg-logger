@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.12-alpine
 
 RUN apk add --no-cache gcc musl-dev
 
@@ -10,11 +10,11 @@ COPY sql/table.sql /docker-entrypoint-initdb.d/00_table.sql
 COPY sql/convert.sql /docker-entrypoint-initdb.d/01_convert.sql
 COPY sql/trigger.sql /docker-entrypoint-initdb.d/02_trigger.sql
 
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
-
 WORKDIR /mqtt-pg-logger
 RUN python -m pip install -r requirements.txt
+
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 5432
 
